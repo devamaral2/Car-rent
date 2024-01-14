@@ -1,25 +1,17 @@
-import express from 'express'
-import { Migration } from '../database/migration'
-import { Connection } from '../database/connection'
-// import errorMiddleware from './middlewares/errorMiddleware';
-// import * as Routes from './routes';
+import express, { NextFunction, Request, Response } from 'express'
+import * as Routes from './routes'
+import { ErrorMiddleware } from './middlewares/error.middleware'
 
 class Bootstrap {
   public app: express.Express
 
   constructor() {
-    this.databaseStart()
     this.app = express()
     this.config()
     this.routes()
     this.app.get('/', (req, res) => {
       res.send('Ok')
     })
-  }
-
-  private databaseStart(): void {
-    const db = Connection.connect()
-    Migration.generateTables(db)
   }
 
   private config(): void {
@@ -34,10 +26,11 @@ class Bootstrap {
 
   private routes(): void {
     this.app.use(express.json())
-
-    // this.app.use('/login', Routes.login);
-    // this.app.use('/benefits', Routes.benefits);
-    // this.app.use(errorMiddleware);
+    this.app.use('/automovel', Routes.automovel)
+    this.app.use(
+      (error: unknown, req: Request, res: Response, next: NextFunction) =>
+        ErrorMiddleware.exec(error, res),
+    )
   }
 
   public start(port: string): void {
