@@ -1,16 +1,13 @@
-import { Error } from 'src/utils/Error'
 import { Response } from 'express'
 
 export class ErrorMiddleware extends Error {
-  public static exec(error: Error, res: Response) {
-    console.error(error)
-    let response = error
-    if (!(error instanceof Error)) {
-      response = {
-        errorMessage: 'An unexpected error has occurred',
-        errorStatus: 500,
-      }
+  public static exec(error: any, res: Response) {
+    const message = error?.message
+    if (message.includes(', definedStatusCode: ')) {
+      const [errorMessage, errorStatus] = message.split(', definedStatusCode: ')
+      res.status(Number(errorStatus)).json({ message: errorMessage })
+    } else {
+      res.status(500).json({ message })
     }
-    res.status(response.errorStatus).json(response.errorMessage)
   }
 }
