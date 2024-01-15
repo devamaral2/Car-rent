@@ -38,7 +38,6 @@ export class RegistroRepository {
   }
 
   async endingRegistro(id: number, dataTermino: string): Promise<void> {
-    console.log(dataTermino)
     const query = `UPDATE Registros SET data_termino = '${dataTermino}' WHERE id = ${id};`
     return this.db.query(query)
   }
