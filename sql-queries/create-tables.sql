@@ -10,11 +10,11 @@ CREATE TABLE IF NOT EXISTS Motoristas (
   nome varchar(255) NOT NULL
 ); 
 
-CREATE TABLE IF NOT EXISTS Alugueis (
+CREATE TABLE IF NOT EXISTS Registros (
   id SERIAL PRIMARY KEY,
   descricao varchar(255) NOT NULL,
-  data_inicio date NOT NULL,
-  data_termino date NOT NULL,
+  data_inicio varchar(50) NOT NULL,
+  data_termino varchar(50),
   id_automovel integer REFERENCES Automoveis(id),
   id_motorista integer REFERENCES Motoristas(id)
 );
