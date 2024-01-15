@@ -1,6 +1,6 @@
 import { IDatabase } from 'pg-promise'
 import { Automovel } from './entities/automovel'
-import { IAutomovelFindAllQueryDTO } from './entities/dto/automovel-findlAll-query.dto'
+import { IAutomovelFindAllQueryDTO } from './entities/dto/automovelFindlAllQuery.dto'
 import { IAutomovelUpdateDTO } from './entities/dto/automovelUpdate.dto'
 
 export class AutomovelRepository {
@@ -36,12 +36,21 @@ export class AutomovelRepository {
     VALUES ('${placa}', '${marca}', '${cor}');`
   }
 
+  async verifyIfAutomovelExists(id: string): Promise<boolean> {
+    const sqlFindQuery = `SELECT * FROM Automoveis WHERE id = '${Number(id)}'`
+    const automoveis = await this.db.query(sqlFindQuery)
+    if (!automoveis.length) return false
+    return true
+  }
+
   async create(automovel: Automovel): Promise<void> {
     return this.db.query(this.buildingCreateQuery(automovel))
   }
 
-  async update(id: string, automovel: IAutomovelUpdateDTO): Promise<void> {
+  async update(id: string, automovel: IAutomovelUpdateDTO): Promise<boolean> {
+    const automovelExist = await this.verifyIfAutomovelExists(id)
     await this.db.query(this.buildingUpdateQuery(id, automovel))
+    return automovelExist
   }
 
   async findAll(query: IAutomovelFindAllQueryDTO): Promise<Automovel[]> {
@@ -54,11 +63,9 @@ export class AutomovelRepository {
   }
 
   async delete(id: string): Promise<boolean> {
-    const sqlFindQuery = `SELECT * FROM automoveis WHERE id = '${Number(id)}'`
-    const automovel = await this.db.query(sqlFindQuery)
-    if (!automovel.length) return false
+    const automovelExist = await this.verifyIfAutomovelExists(id)
     const sqlQuery = `DELETE FROM automoveis WHERE id = '${Number(id)}'`
     await this.db.none(sqlQuery)
-    return true
+    return automovelExist
   }
 }

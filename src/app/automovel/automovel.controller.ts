@@ -1,4 +1,4 @@
-import { IAutomovelFindAllQueryDTO } from './entities/dto/automovel-findlAll-query.dto'
+import { IAutomovelFindAllQueryDTO } from './entities/dto/automovelFindlAllQuery.dto'
 import { AutomovelService } from './automovel.service'
 import { Response, Request, NextFunction } from 'express'
 
