@@ -1,6 +1,7 @@
 {
-    "extends": "@rocketseat/eslint-config/node",
-    "rules": {
-        "@typescript-eslint/no-var-requires": "off"
-    }
+  "extends": "@rocketseat/eslint-config/node",
+  "plugins": ["unused-imports"],
+  "rules": {
+    "@typescript-eslint/no-var-requires": "off"
+  }
 }

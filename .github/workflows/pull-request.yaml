@@ -4,7 +4,7 @@ on:
     pull_request:
 
 jobs:
-    tests:
+    build:
         runs-on: ubuntu-latest
         steps:
             - name: Verificando o repositório do Github
@@ -20,7 +20,9 @@ jobs:
 
             - name: Install dependencies
               run: pnpm install --frozen-lockfile
-            - name: Executing lint
+
+            - name: Running lint
               run: pnpm run lint
-            - name: Executing test
+
+            - name: Running test
               run: pnpm run test

@@ -4,10 +4,11 @@
   "description": "Api to link cars to rent to users",
   "scripts": {
     "start": "node dist/index.js",
-    "start:dev": "tsx watch src/index.ts",
+    "start:dev": "pnpm run database:up & tsx watch src/index.ts",
     "build": "tsup build src",
     "app": "docker compose up -d",
     "app:down": "docker compose down --remove-orphans",
+    "database:up": "tsx scripts/startDatabase.ts",
     "database:down": "docker volume rm car-rent_db",
     "test": "vitest",
     "lint": "eslint \"src/**/*.ts\" --fix"
@@ -24,7 +25,8 @@
     "@rocketseat/eslint-config": "^2.1.0",
     "@types/node": "^20.11.0",
     "eslint": "^8.56.0",
-    "prettier": "3.2.1",
+    "eslint-plugin-unused-imports": "^3.0.0",
+    "prettier": "^3.2.2",
     "tsup": "^8.0.1",
     "tsx": "^4.7.0",
     "typescript": "^5.3.3",
@@ -35,6 +37,6 @@
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "pg-promise": "^11.5.4",
-    "uuid": "^9.0.1"
+    "zod": "^3.22.4"
   }
 }
