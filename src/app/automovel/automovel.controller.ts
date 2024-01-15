@@ -23,7 +23,7 @@ export class AutomovelController {
         body,
         params: { id },
       } = req
-      await this.service.update(id, body)
+      await this.service.update(Number(id), body)
       res.status(200).json({ message: 'Automovel atualizado' })
     } catch (error) {
       next(error)
@@ -53,7 +53,7 @@ export class AutomovelController {
       const {
         params: { id },
       } = req
-      const automovel = await this.service.findOne(id)
+      const automovel = await this.service.findOne(Number(id))
       res.status(200).json(automovel)
     } catch (error) {
       next(error)
@@ -65,7 +65,7 @@ export class AutomovelController {
       const {
         params: { id },
       } = req
-      await this.service.delete(id)
+      await this.service.delete(Number(id))
       res.status(200).json({ message: 'Automovel deletado' })
     } catch (error) {
       next(error)

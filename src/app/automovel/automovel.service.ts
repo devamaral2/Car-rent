@@ -19,7 +19,7 @@ export class AutomovelService {
     }
   }
 
-  async update(id: string, body: IAutomovelUpdateDTO): Promise<void> {
+  async update(id: number, body: IAutomovelUpdateDTO): Promise<void> {
     try {
       const automovel = automovelVerifier(body, 'update')
       const automovelExist = await this.repository.update(id, automovel)
@@ -39,7 +39,7 @@ export class AutomovelService {
     }
   }
 
-  async findOne(id: string): Promise<Automovel> {
+  async findOne(id: number): Promise<Automovel> {
     try {
       const automovel = await this.repository.findOne(id)
       if (!automovel.length)
@@ -50,7 +50,7 @@ export class AutomovelService {
     }
   }
 
-  async delete(id: string): Promise<void> {
+  async delete(id: number): Promise<void> {
     try {
       const autmovelExist = await this.repository.delete(id)
       if (!autmovelExist)
