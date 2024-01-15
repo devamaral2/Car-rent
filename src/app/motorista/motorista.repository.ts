@@ -22,8 +22,8 @@ export class MotoristaRepository {
     VALUES ('${nome}');`
   }
 
-  async verifyIfMotoristaExists(id: string): Promise<boolean> {
-    const sqlFindQuery = `SELECT * FROM Motoristas WHERE id = '${Number(id)}'`
+  async verifyIfMotoristaExists(id: number): Promise<boolean> {
+    const sqlFindQuery = `SELECT * FROM Motoristas WHERE id = '${id}'`
     const motorista = await this.db.query(sqlFindQuery)
     if (!motorista.length) return false
     return true
@@ -33,9 +33,9 @@ export class MotoristaRepository {
     return this.db.query(this.buildingCreateQuery(motorista))
   }
 
-  async update(id: string, motorista: Motorista): Promise<boolean> {
+  async update(id: number, motorista: Motorista): Promise<boolean> {
     const motoristaExist = await this.verifyIfMotoristaExists(id)
-    const sqlQuery = `UPDATE Motoristas SET nome = '${motorista.nome}' WHERE id = '${Number(id)}'`
+    const sqlQuery = `UPDATE Motoristas SET nome = '${motorista.nome}' WHERE id = '${id}'`
     await this.db.none(sqlQuery)
     return motoristaExist
   }
@@ -44,14 +44,14 @@ export class MotoristaRepository {
     return this.db.query(this.buildingFindAllQuery(query))
   }
 
-  async findOne(id: string): Promise<Motorista[]> {
-    const sqlQuery = `SELECT * FROM Motoristas WHERE id = '${Number(id)}'`
+  async findOne(id: number): Promise<Motorista[]> {
+    const sqlQuery = `SELECT * FROM Motoristas WHERE id = '${id}'`
     return this.db.query(sqlQuery)
   }
 
-  async delete(id: string): Promise<boolean> {
+  async delete(id: number): Promise<boolean> {
     const motoristaExist = await this.verifyIfMotoristaExists(id)
-    const sqlQuery = `DELETE FROM Motoristas WHERE id = '${Number(id)}'`
+    const sqlQuery = `DELETE FROM Motoristas WHERE id = '${id}'`
     await this.db.none(sqlQuery)
     return motoristaExist
   }
