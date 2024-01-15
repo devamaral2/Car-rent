@@ -1,12 +1,13 @@
 import { Automovel } from './entities/automovel'
 import { IAutomovelFindAllQueryDTO } from './entities/dto/automovelFindlAllQuery.dto'
-import { AutomovelRepository } from './automovel.repository'
+import { AutomovelRepository } from './repositories/automovel.repository'
 import { automovelVerifier } from './utils/automovelVerifiers'
 import { IAutomovelUpdateDTO } from './entities/dto/automovelUpdate.dto'
 import { throwErrorHandler } from '../utils/throwErrorHandler'
-import { automovel } from 'src/infrastrcture/server/routes'
+import { IAutomovelRepository } from './repositories/automovel.interface.repository'
+
 export class AutomovelService {
-  constructor(private readonly repository: AutomovelRepository) {
+  constructor(private readonly repository: IAutomovelRepository) {
     this.repository = repository
   }
 
@@ -30,7 +31,7 @@ export class AutomovelService {
     }
   }
 
-  async findAll(query: IAutomovelFindAllQueryDTO): Promise<Automovel[]> {
+  async findAll(query?: IAutomovelFindAllQueryDTO): Promise<Automovel[]> {
     try {
       const finalQuery = automovelVerifier(query, 'findQuery')
       return this.repository.findAll(finalQuery)

@@ -4,7 +4,7 @@ import { MotoristaRepository } from '../motorista/motorista.repository'
 import { RegistroService } from './registro.service'
 import { MotoristaService } from '../motorista/motorista.service'
 import { RegistroController } from './registro.controller'
-import { AutomovelRepository } from '../automovel/automovel.repository'
+import { AutomovelRepository } from '../automovel/repositories/automovel.repository'
 import { AutomovelService } from '../automovel/automovel.service'
 
 export class RegistroFactory {

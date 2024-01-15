@@ -1,4 +1,4 @@
-import { AutomovelRepository } from './automovel.repository'
+import { AutomovelRepository } from './repositories/automovel.repository'
 import { AutomovelService } from './automovel.service'
 import { AutomovelController } from './automovel.controller'
 import { postgresConnection } from 'src/infrastrcture/database/connection'
