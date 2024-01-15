@@ -1,17 +1,34 @@
-import { Automovel } from './entities/automovel'
 import { IAutomovelFindAllQueryDTO } from './entities/dto/automovel-findlAll-query.dto'
 import { AutomovelService } from './automovel.service'
 import { Response, Request, NextFunction } from 'express'
 
 export class AutomovelController {
-  constructor(private readonly repository: AutomovelService) {
-    this.repository = repository
+  constructor(private readonly service: AutomovelService) {
+    this.service = service
   }
 
-  //   async create(automovel: Automovel): Promise<Automovel> {
-  //     const createdAutomovel = new this.automovelModel(automovel)
-  //     return createdAutomovel.save()
-  //   }
+  async create(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const { body } = req
+      await this.service.create(body)
+      res.status(201).json({ message: 'Automovel criado' })
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  async update(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const {
+        body,
+        params: { id },
+      } = req
+      await this.service.update(id, body)
+      res.status(200).json({ message: 'Automovel atualizado' })
+    } catch (error) {
+      next(error)
+    }
+  }
 
   async findAll(
     req: Request,
@@ -20,22 +37,38 @@ export class AutomovelController {
   ): Promise<void> {
     try {
       const query: IAutomovelFindAllQueryDTO = req.query
-      const automoveis = await this.repository.findAll(query)
+      const automoveis = await this.service.findAll(query)
       res.status(200).json(automoveis)
     } catch (error) {
       next(error)
     }
   }
 
-  //   async findOne(placa: string): Promise<Automovel | null> {
-  //     return this.automovelModel.findOne({ placa }).exec()
-  //   }
+  async findOne(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> {
+    try {
+      const {
+        params: { id },
+      } = req
+      const automovel = await this.service.findOne(id)
+      res.status(200).json(automovel)
+    } catch (error) {
+      next(error)
+    }
+  }
 
-  //   async updateOne(placa: string, automovel: Automovel): Promise<Automovel> {
-  //     return this.automovelModel.findOneAndUpdate({ placa }, automovel).exec()
-  //   }
-
-  //   async deleteOne(placa: string): Promise<Automovel | null> {
-  //     return this.automovelModel.findOneAndDelete({ placa }).exec()
-  //   }
+  async delete(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const {
+        params: { id },
+      } = req
+      await this.service.delete(id)
+      res.status(200).json({ message: 'Automovel deletado' })
+    } catch (error) {
+      next(error)
+    }
+  }
 }

@@ -1,36 +1,61 @@
 import { Automovel } from './entities/automovel'
 import { IAutomovelFindAllQueryDTO } from './entities/dto/automovel-findlAll-query.dto'
 import { AutomovelRepository } from './automovel.repository'
-import { automovelFindAllQueryDTOVerifier } from './utils/automovelFindAllQueryDTO.verifier'
+import { automovelVerifier } from './utils/automovelVerifiers'
+import { IAutomovelUpdateDTO } from './entities/dto/automovelUpdate.dto'
+import { throwErrorHandler } from '../utils/throwErrorHandler'
+import { automovel } from 'src/infrastrcture/server/routes'
 export class AutomovelService {
   constructor(private readonly repository: AutomovelRepository) {
     this.repository = repository
   }
 
-  async findAll(query: IAutomovelFindAllQueryDTO): Promise<Automovel[]> {
+  async create(body: Automovel): Promise<void> {
     try {
-      const finalQuery = automovelFindAllQueryDTOVerifier(query)
-      return this.repository.findAll(finalQuery)
+      const automovel = automovelVerifier(body, 'create')
+      await this.repository.create(automovel)
     } catch (e) {
-      const error = e?.message ? e.message : e.errors[0].message
-      throw new Error(`${error}, definedStatusCode: 400`)
+      throwErrorHandler(e)
     }
   }
 
-  //   async create(automovel: Automovel): Promise<Automovel> {
-  //     const createdAutomovel = new this.automovelModel(automovel)
-  //     return createdAutomovel.save()
-  //   }
+  async update(id: string, body: IAutomovelUpdateDTO): Promise<void> {
+    try {
+      const automovel = automovelVerifier(body, 'update')
+      await this.repository.update(id, automovel)
+    } catch (e) {
+      throwErrorHandler(e)
+    }
+  }
 
-  //   async findOne(placa: string): Promise<Automovel | null> {
-  //     return this.automovelModel.findOne({ placa }).exec()
-  //   }
+  async findAll(query: IAutomovelFindAllQueryDTO): Promise<Automovel[]> {
+    try {
+      const finalQuery = automovelVerifier(query, 'findQuery')
+      return this.repository.findAll(finalQuery)
+    } catch (e) {
+      throwErrorHandler(e)
+    }
+  }
 
-  //   async updateOne(placa: string, automovel: Automovel): Promise<Automovel> {
-  //     return this.automovelModel.findOneAndUpdate({ placa }, automovel).exec()
-  //   }
+  async findOne(id: string): Promise<Automovel> {
+    try {
+      const automovel = await this.repository.findOne(id)
+      if (!automovel.length)
+        throwErrorHandler(new Error('Automovel não encontrado'))
+      return automovel[0]
+    } catch (e) {
+      throwErrorHandler(e)
+    }
+  }
 
-  //   async deleteOne(placa: string): Promise<Automovel | null> {
-  //     return this.automovelModel.findOneAndDelete({ placa }).exec()
-  //   }
+  async delete(id: string): Promise<void> {
+    try {
+      const autmovelExist = await this.repository.delete(id)
+      if (!autmovelExist)
+        throwErrorHandler(new Error('Automovel não encontrado'))
+      await this.repository.delete(id)
+    } catch (e) {
+      throwErrorHandler(e)
+    }
+  }
 }
