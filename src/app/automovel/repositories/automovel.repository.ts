@@ -1,14 +1,16 @@
 import { IDatabase } from 'pg-promise'
-import { Automovel } from './entities/automovel'
-import { IAutomovelFindAllQueryDTO } from './entities/dto/automovelFindlAllQuery.dto'
-import { IAutomovelUpdateDTO } from './entities/dto/automovelUpdate.dto'
+import { Automovel } from '../entities/automovel'
+import { IAutomovelFindAllQueryDTO } from '../entities/dto/automovelFindlAllQuery.dto'
+import { IAutomovelUpdateDTO } from '../entities/dto/automovelUpdate.dto'
+import { IAutomovelRepository } from './automovel.interface.repository'
+import { A } from 'vitest/dist/reporters-trlZlObr'
 
-export class AutomovelRepository {
+export class AutomovelRepository implements IAutomovelRepository {
   constructor(private readonly db: IDatabase<any>) {
     this.db = db
   }
 
-  buildingFindAllQuery(query: IAutomovelFindAllQueryDTO): string {
+  buildingFindAllQuery(query?: IAutomovelFindAllQueryDTO): string {
     let sqlQuery = 'SELECT * FROM automoveis'
     Object.entries(query).forEach(([key, value], index) => {
       if (index === 0) {
@@ -53,7 +55,7 @@ export class AutomovelRepository {
     return automovelExist
   }
 
-  async findAll(query: IAutomovelFindAllQueryDTO): Promise<Automovel[]> {
+  async findAll(query?: IAutomovelFindAllQueryDTO): Promise<Automovel[]> {
     return this.db.query(this.buildingFindAllQuery(query))
   }
 
