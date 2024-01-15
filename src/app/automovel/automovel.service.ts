@@ -1,5 +1,5 @@
 import { Automovel } from './entities/automovel'
-import { IAutomovelFindAllQueryDTO } from './entities/dto/automovel-findlAll-query.dto'
+import { IAutomovelFindAllQueryDTO } from './entities/dto/automovelFindlAllQuery.dto'
 import { AutomovelRepository } from './automovel.repository'
 import { automovelVerifier } from './utils/automovelVerifiers'
 import { IAutomovelUpdateDTO } from './entities/dto/automovelUpdate.dto'
@@ -22,7 +22,9 @@ export class AutomovelService {
   async update(id: string, body: IAutomovelUpdateDTO): Promise<void> {
     try {
       const automovel = automovelVerifier(body, 'update')
-      await this.repository.update(id, automovel)
+      const automovelExist = await this.repository.update(id, automovel)
+      if (!automovelExist)
+        throwErrorHandler(new Error('Automovel não encontrado'))
     } catch (e) {
       throwErrorHandler(e)
     }

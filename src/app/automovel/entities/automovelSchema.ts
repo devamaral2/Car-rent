@@ -14,9 +14,6 @@ export const automovelSchema = z.object({
     .transform((value) => value.replace('-', ''))
     .refine((value) => /^[a-z0-9]+$/i.test(value), {
       message: 'A placa só pode conter letras e números',
-    })
-    .refine((value) => value !== '', {
-      message: 'A placa é um campo obrigatório',
     }),
   cor: z
     .string({
@@ -24,18 +21,12 @@ export const automovelSchema = z.object({
       invalid_type_error: 'A cor deve ser uma string',
     })
     .toLowerCase()
-    .trim()
-    .refine((value) => value !== '', {
-      message: 'A cor é um campo obrigatório',
-    }),
+    .trim(),
   marca: z
     .string({
       required_error: 'A marca é um campo obrigatório',
       invalid_type_error: 'A marca deve ser uma string',
     })
     .toLowerCase()
-    .trim()
-    .refine((value) => value !== '', {
-      message: 'A marca é um campo obrigatório',
-    }),
+    .trim(),
 })

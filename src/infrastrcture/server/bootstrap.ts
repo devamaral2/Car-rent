@@ -27,6 +27,7 @@ class Bootstrap {
   private routes(): void {
     this.app.use(express.json())
     this.app.use('/automovel', Routes.automovel)
+    this.app.use('/motorista', Routes.motorista)
     this.app.use(
       (error: unknown, req: Request, res: Response, next: NextFunction) =>
         ErrorMiddleware.exec(error, res),
