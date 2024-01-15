@@ -42,7 +42,7 @@ INSERT INTO Motoristas (nome) VALUES
 ('Leonardo'),
 ('Isabela');
 
-INSERT INTO Alugueis (descricao, data_inicio, data_termino, id_automovel, id_motorista) VALUES 
+INSERT INTO Registros (descricao, data_inicio, data_termino, id_automovel, id_motorista) VALUES 
 ('Aluguel 1', '2022-01-01', '2022-01-10', 1, 1),
 ('Aluguel 2', '2022-02-01', '2022-02-10', 2, 2),
 ('Aluguel 3', '2022-03-01', '2022-03-10', 3, 3),

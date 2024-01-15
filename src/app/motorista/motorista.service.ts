@@ -3,7 +3,6 @@ import { motoristaVerifier } from './utils/motoristaVerifier'
 import { throwErrorHandler } from '../utils/throwErrorHandler'
 
 import { MotoristaRepository } from './motorista.repository'
-import { automovelVerifier } from '../automovel/utils/automovelVerifiers'
 import { Motorista } from './entities/motorista'
 import { IMotoristaFindAllQueryDTO } from './entities/dto/motoristaFindAllQuery.dto'
 export class MotoristaService {
@@ -20,7 +19,7 @@ export class MotoristaService {
     }
   }
 
-  async update(id: string, body: Motorista): Promise<void> {
+  async update(id: number, body: Motorista): Promise<void> {
     try {
       const motorista = motoristaVerifier(body, 'update')
       const motoristaExist = await this.repository.update(id, motorista)
@@ -40,7 +39,7 @@ export class MotoristaService {
     }
   }
 
-  async findOne(id: string): Promise<Motorista> {
+  async findOne(id: number): Promise<Motorista> {
     try {
       const motorista = await this.repository.findOne(id)
       if (!motorista.length)
@@ -51,7 +50,7 @@ export class MotoristaService {
     }
   }
 
-  async delete(id: string): Promise<void> {
+  async delete(id: number): Promise<void> {
     try {
       const motoristaExist = await this.repository.delete(id)
       if (!motoristaExist)

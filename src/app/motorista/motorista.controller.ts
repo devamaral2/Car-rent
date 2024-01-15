@@ -23,7 +23,7 @@ export class MotoristaController {
         body,
         params: { id },
       } = req
-      await this.service.update(id, body)
+      await this.service.update(Number(id), body)
       res.status(200).json({ message: 'Motorista atualizado com sucesso!' })
     } catch (error) {
       next(error)
@@ -53,7 +53,7 @@ export class MotoristaController {
       const {
         params: { id },
       } = req
-      const motorista = await this.service.findOne(id)
+      const motorista = await this.service.findOne(Number(id))
       res.status(200).json(motorista)
     } catch (error) {
       next(error)
@@ -65,7 +65,7 @@ export class MotoristaController {
       const {
         params: { id },
       } = req
-      await this.service.delete(id)
+      await this.service.delete(Number(id))
       res.status(200).json({ message: 'Motorista deletado com sucesso!' })
     } catch (error) {
       next(error)
