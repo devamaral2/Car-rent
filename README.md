@@ -12,7 +12,8 @@ Esta é uma aplicação de aluguel de carros onde os usuários podem trabalhar c
 1. Clone o repositório para a sua máquina local usando `git clone`, para realizar esta operação você deverá ter o `git` instalado no seu computador. Para mais informações: `https://www.git-scm.com/downloads`
 2. Navegue até o diretório do projeto com o pnpm já instalado e execute o comando `pnpm install` para instalar todas as dependências do projeto. Caso já tenha o npm instaldo no seu computador basta executar o comando `npm install -g pnpm`
 3. Rode o comando `pnpm run app`. Este comando ira criar um container no docker com o servidor do postgres e para que ele funcione você deverá ter o docker instalado na sua máquina. Para mais informações veja a documentação oficial `https://docs.docker.com/get-docker/`
-4. Após isso basta realizar o build da aplicação com o comando `pnpm run build` e depois executar o `pnpm start`, uma vez que você executar este comando a aplicação sozinha irá criar as tabelar e também algumas entidades no banco de dados. No mais é apenas utilizar as rotas pelo dominio `http://localhost:8000`
+4. Crie um arquivo `.env` nos moldes do arquivo `.env.example`
+5. Após isso basta realizar o build da aplicação com o comando `pnpm run build` e depois executar o `pnpm start`, uma vez que você executar este comando a aplicação sozinha irá criar as tabelar e também algumas entidades no banco de dados. No mais é apenas utilizar as rotas pelo dominio `http://localhost:8000`
 
 ## Como rodar os testes
 Esta aplicação tem testes unitários que garantem a qualidade do código. Para executar os testes basta instalar as dependências com o comando `pnpm install` na raiz do projeto e depois executar o comando com `pnpm test` 
