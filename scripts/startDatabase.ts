@@ -14,11 +14,15 @@ async function start() {
   try {
     const automoveisNumber = await db.query('SELECT COUNT(*) FROM automoveis')
     const motoristasNumber = await db.query('SELECT COUNT(*) FROM motoristas')
-    // const alugueisNumber = await db.query('SELECT COUNT(*) FROM alugueis')
+    const registroisNumber = await db.query('SELECT COUNT(*) FROM registros')
     const isEmpty = (answer: { count: string }[]): boolean => {
       return answer[0].count === '0'
     }
-    if (isEmpty(automoveisNumber) && isEmpty(motoristasNumber)) {
+    if (
+      isEmpty(automoveisNumber) &&
+      isEmpty(motoristasNumber) &&
+      isEmpty(registroisNumber)
+    ) {
       const query = new pgp.QueryFile('../sql-queries/seed-database.sql')
       await db.query(query)
       console.log('Dados inseridos com sucesso!')
