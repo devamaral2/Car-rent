@@ -1,13 +1,14 @@
 import { IDatabase } from 'pg-promise'
-import { Motorista } from './entities/motorista'
-import { IMotoristaFindAllQueryDTO } from './entities/dto/motoristaFindAllQuery.dto'
+import { Motorista } from '../entities/motorista'
+import { IMotoristaRepository } from './interface/motorista.interface.repository'
+import { Automovel } from 'src/app/automovel/entities/automovel'
 
-export class MotoristaRepository {
+export class MotoristaRepository implements IMotoristaRepository {
   constructor(private readonly db: IDatabase<any>) {
     this.db = db
   }
 
-  buildingFindAllQuery(query: IMotoristaFindAllQueryDTO): string {
+  buildingFindAllQuery(query?: Partial<Motorista>): string {
     let sqlQuery = 'SELECT * FROM Motoristas'
     if (query?.nome) {
       sqlQuery += ` WHERE nome = '${query?.nome}'`
@@ -40,7 +41,7 @@ export class MotoristaRepository {
     return motoristaExist
   }
 
-  async findAll(query: IMotoristaFindAllQueryDTO): Promise<Motorista[]> {
+  async findAll(query?: Partial<Motorista>): Promise<Motorista[]> {
     return this.db.query(this.buildingFindAllQuery(query))
   }
 

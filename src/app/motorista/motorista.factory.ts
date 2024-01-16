@@ -1,6 +1,6 @@
 import { postgresConnection } from 'src/infrastrcture/database/connection'
 import { MotoristaService } from './motorista.service'
-import { MotoristaRepository } from './motorista.repository'
+import { MotoristaRepository } from './repositories/motorista.repository'
 import { MotoristaController } from './motorista.controller'
 
 export class MotoristaFactory {

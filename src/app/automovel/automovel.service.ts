@@ -1,10 +1,7 @@
 import { Automovel } from './entities/automovel'
-import { IAutomovelFindAllQueryDTO } from './entities/dto/automovelFindlAllQuery.dto'
-import { AutomovelRepository } from './repositories/automovel.repository'
-import { automovelVerifier } from './utils/automovelVerifiers'
-import { IAutomovelUpdateDTO } from './entities/dto/automovelUpdate.dto'
+import { automovelVerifier } from './automovelVerifiers'
 import { throwErrorHandler } from '../utils/throwErrorHandler'
-import { IAutomovelRepository } from './repositories/automovel.interface.repository'
+import { IAutomovelRepository } from './repositories/interface/automovel.interface.repository'
 
 export class AutomovelService {
   constructor(private readonly repository: IAutomovelRepository) {
@@ -20,7 +17,7 @@ export class AutomovelService {
     }
   }
 
-  async update(id: number, body: IAutomovelUpdateDTO): Promise<void> {
+  async update(id: number, body: Partial<Automovel>): Promise<void> {
     try {
       const automovel = automovelVerifier(body, 'update')
       const automovelExist = await this.repository.update(id, automovel)
@@ -31,9 +28,9 @@ export class AutomovelService {
     }
   }
 
-  async findAll(query?: IAutomovelFindAllQueryDTO): Promise<Automovel[]> {
+  async findAll(query?: Partial<Automovel>): Promise<Automovel[]> {
     try {
-      const finalQuery = automovelVerifier(query, 'findQuery')
+      const finalQuery = automovelVerifier(query)
       return this.repository.findAll(finalQuery)
     } catch (e) {
       throwErrorHandler(e)

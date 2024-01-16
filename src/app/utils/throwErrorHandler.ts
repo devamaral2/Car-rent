@@ -17,5 +17,11 @@ export function throwErrorHandler(e) {
     error.message = e.message
     error.statusCode = 409
   }
-  throw new Error(`${error.message}, definedStatusCode: ${error.statusCode}`)
+  throw new Error(
+    `${error.message}${
+      !error.message.includes(', definedStatusCode: ')
+        ? `, definedStatusCode: ${error.statusCode}`
+        : ''
+    }`,
+  )
 }

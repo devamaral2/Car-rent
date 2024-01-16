@@ -1,6 +1,6 @@
 import { postgresConnection } from 'src/infrastrcture/database/connection'
-import { RegistroRepository } from './registro.repository'
-import { MotoristaRepository } from '../motorista/motorista.repository'
+import { RegistroRepository } from './repositories/registro.repository'
+import { MotoristaRepository } from '../motorista/repositories/motorista.repository'
 import { RegistroService } from './registro.service'
 import { MotoristaService } from '../motorista/motorista.service'
 import { RegistroController } from './registro.controller'

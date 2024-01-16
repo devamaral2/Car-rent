@@ -1,15 +1,11 @@
 import { Automovel } from '../entities/automovel'
-import { IAutomovelFindAllQueryDTO } from '../entities/dto/automovelFindlAllQuery.dto'
-import { IAutomovelUpdateDTO } from '../entities/dto/automovelUpdate.dto'
-import { IAutomovelRepository } from './automovel.interface.repository'
+import { IAutomovelRepository } from './interface/automovel.interface.repository'
 
 export class AutomovelInMemoryRepository implements IAutomovelRepository {
   public automoveis: Automovel[] = []
   private mockId = 0
 
-  buildingFindAllQuery(
-    query?: IAutomovelFindAllQueryDTO,
-  ): Automovel[] | string {
+  buildingFindAllQuery(query?: Partial<Automovel>): Automovel[] | string {
     return this.automoveis.filter((automovel) => {
       return Object.entries(query).every(([key, value]) => {
         return automovel[key] === value
@@ -17,7 +13,7 @@ export class AutomovelInMemoryRepository implements IAutomovelRepository {
     })
   }
 
-  buildingUpdateQuery(id: number, automovel: IAutomovelUpdateDTO): string {
+  buildingUpdateQuery(id: number, automovel: Partial<Automovel>): string {
     throw new Error('Method not implemented.')
   }
 
@@ -33,7 +29,7 @@ export class AutomovelInMemoryRepository implements IAutomovelRepository {
     this.automoveis.push({ ...automovel, id: (this.mockId += 1) })
   }
 
-  async update(id: number, automovel: IAutomovelUpdateDTO): Promise<boolean> {
+  async update(id: number, automovel: Partial<Automovel>): Promise<boolean> {
     const index = this.automoveis.findIndex((automovel) => automovel.id === id)
     if (index === -1) {
       return false
@@ -42,20 +38,20 @@ export class AutomovelInMemoryRepository implements IAutomovelRepository {
     return true
   }
 
-  async findAll(query?: IAutomovelFindAllQueryDTO): Promise<Automovel[]> {
-    return this.buildingFindAllQuery(query) as Automovel[]
+  async findAll(query?: Partial<Automovel>): Promise<Automovel[]> {
+    const test = (await this.buildingFindAllQuery(query)) as Automovel[]
+    return test
   }
 
   async findOne(id: number): Promise<Automovel[]> {
     const automovel = this.automoveis.find((automovel) => automovel.id === id)
+    if (!automovel) return []
     return [automovel]
   }
 
   async delete(id: number): Promise<boolean> {
     const automovelExist = await this.verifyIfAutomovelExists(id)
-
-    this.automoveis = this.automoveis.filter((automovel) => automovel.id !== id)
-
+    this.automoveis = this.automoveis.splice(id, 1)
     return automovelExist
   }
 }
