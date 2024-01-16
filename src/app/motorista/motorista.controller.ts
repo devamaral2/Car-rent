@@ -1,4 +1,4 @@
-import { IMotoristaFindAllQueryDTO } from './entities/dto/motoristaFindAllQuery.dto'
+import { Motorista } from './entities/motorista'
 import { MotoristaService } from './motorista.service'
 import { Response, Request, NextFunction } from 'express'
 
@@ -36,7 +36,7 @@ export class MotoristaController {
     next: NextFunction,
   ): Promise<void> {
     try {
-      const query: IMotoristaFindAllQueryDTO = req.query
+      const query: Partial<Motorista> = req.query
       const motoristas = await this.service.findAll(query)
       res.status(200).json(motoristas)
     } catch (error) {

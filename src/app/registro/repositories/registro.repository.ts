@@ -1,5 +1,6 @@
 import { IDatabase } from 'pg-promise'
-import { Registro } from './entities/registro'
+import { Registro } from '../entities/registro'
+import { RegistroSearchContext } from '../entities/rentSearchContext'
 
 export class RegistroRepository {
   constructor(private readonly db: IDatabase<any>) {
@@ -22,7 +23,10 @@ export class RegistroRepository {
     return `${insertString}) ${valueString});`
   }
 
-  async verifyIfIsInRent(id: number, context: string): Promise<boolean> {
+  async verifyIfIsInRent(
+    id: number,
+    context: RegistroSearchContext,
+  ): Promise<boolean> {
     const query = `SELECT * FROM Registros WHERE id_${context} = ${id} AND data_termino IS NULL;`
     const result = await this.db.query(query)
     return result.length > 0

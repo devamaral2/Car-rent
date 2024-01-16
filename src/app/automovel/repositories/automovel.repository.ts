@@ -1,8 +1,6 @@
 import { IDatabase } from 'pg-promise'
 import { Automovel } from '../entities/automovel'
-import { IAutomovelFindAllQueryDTO } from '../entities/dto/automovelFindlAllQuery.dto'
-import { IAutomovelUpdateDTO } from '../entities/dto/automovelUpdate.dto'
-import { IAutomovelRepository } from './automovel.interface.repository'
+import { IAutomovelRepository } from './interface/automovel.interface.repository'
 import { A } from 'vitest/dist/reporters-trlZlObr'
 
 export class AutomovelRepository implements IAutomovelRepository {
@@ -10,7 +8,7 @@ export class AutomovelRepository implements IAutomovelRepository {
     this.db = db
   }
 
-  buildingFindAllQuery(query?: IAutomovelFindAllQueryDTO): string {
+  buildingFindAllQuery(query?: Partial<Automovel>): string {
     let sqlQuery = 'SELECT * FROM automoveis'
     Object.entries(query).forEach(([key, value], index) => {
       if (index === 0) {
@@ -22,7 +20,7 @@ export class AutomovelRepository implements IAutomovelRepository {
     return sqlQuery
   }
 
-  buildingUpdateQuery(id: number, automovel: IAutomovelUpdateDTO): string {
+  buildingUpdateQuery(id: number, automovel: Partial<Automovel>): string {
     let sqlQuery = 'UPDATE automoveis SET '
     Object.entries(automovel).forEach(([key, value], index) => {
       if (index === 0) sqlQuery += `${key} = '${value}'`
@@ -49,13 +47,13 @@ export class AutomovelRepository implements IAutomovelRepository {
     return this.db.query(this.buildingCreateQuery(automovel))
   }
 
-  async update(id: number, automovel: IAutomovelUpdateDTO): Promise<boolean> {
+  async update(id: number, automovel: Partial<Automovel>): Promise<boolean> {
     const automovelExist = await this.verifyIfAutomovelExists(id)
     await this.db.query(this.buildingUpdateQuery(id, automovel))
     return automovelExist
   }
 
-  async findAll(query?: IAutomovelFindAllQueryDTO): Promise<Automovel[]> {
+  async findAll(query?: Partial<Automovel>): Promise<Automovel[]> {
     return this.db.query(this.buildingFindAllQuery(query))
   }
 

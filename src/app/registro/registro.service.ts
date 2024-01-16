@@ -1,13 +1,14 @@
-import { RegistroRepository } from './registro.repository'
+import { RegistroRepository } from './repositories/registro.repository'
 import { Registro } from './entities/registro'
-import { registroVerifier } from './utils/registroVerifier'
+import { registroVerifier } from './registroVerifier'
 import { throwErrorHandler } from '../utils/throwErrorHandler'
 import { AutomovelService } from '../automovel/automovel.service'
 import { MotoristaService } from '../motorista/motorista.service'
+import { IRegistroRepository } from './repositories/interface/registro.interface.repository'
 
 export class RegistroService {
   constructor(
-    private readonly repository: RegistroRepository,
+    private readonly repository: IRegistroRepository,
     private readonly automovelService: AutomovelService,
     private readonly motoristaService: MotoristaService,
   ) {
@@ -30,16 +31,17 @@ export class RegistroService {
     if (automovelIsInRent)
       throwErrorHandler(new Error('O automóvel já está alugado'))
     const motoristaIsRenting = await this.repository.verifyIfIsInRent(
-      idAutomovel,
+      idMotorista,
       'motorista',
     )
-    if (motoristaIsRenting)
+    if (motoristaIsRenting) {
       throwErrorHandler(new Error('O motorista já está alugando'))
+    }
   }
 
   async create(registro: Registro): Promise<void> {
     try {
-      const registroVerified = registroVerifier(registro, 'create')
+      const registroVerified = registroVerifier(registro)
       await this.verifyIfEntitiesExists(
         registro.id_automovel,
         registro.id_motorista,

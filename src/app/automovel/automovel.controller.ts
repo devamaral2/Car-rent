@@ -1,6 +1,6 @@
-import { IAutomovelFindAllQueryDTO } from './entities/dto/automovelFindlAllQuery.dto'
 import { AutomovelService } from './automovel.service'
 import { Response, Request, NextFunction } from 'express'
+import { Automovel } from './entities/automovel'
 
 export class AutomovelController {
   constructor(private readonly service: AutomovelService) {
@@ -36,7 +36,7 @@ export class AutomovelController {
     next: NextFunction,
   ): Promise<void> {
     try {
-      const query: IAutomovelFindAllQueryDTO = req.query
+      const query: Partial<Automovel> = req.query
       const automoveis = await this.service.findAll(query)
       res.status(200).json(automoveis)
     } catch (error) {

@@ -1,18 +1,15 @@
-import { motoristaVerifier } from './utils/motoristaVerifier'
-
+import { motoristaVerifier } from './motoristaVerifier'
 import { throwErrorHandler } from '../utils/throwErrorHandler'
-
-import { MotoristaRepository } from './motorista.repository'
 import { Motorista } from './entities/motorista'
-import { IMotoristaFindAllQueryDTO } from './entities/dto/motoristaFindAllQuery.dto'
+import { IMotoristaRepository } from './repositories/interface/motorista.interface.repository'
 export class MotoristaService {
-  constructor(private readonly repository: MotoristaRepository) {
+  constructor(private readonly repository: IMotoristaRepository) {
     this.repository = repository
   }
 
   async create(body: Motorista): Promise<void> {
     try {
-      const motorista = motoristaVerifier(body, 'create')
+      const motorista = motoristaVerifier(body)
       await this.repository.create(motorista)
     } catch (e) {
       throwErrorHandler(e)
@@ -21,7 +18,7 @@ export class MotoristaService {
 
   async update(id: number, body: Motorista): Promise<void> {
     try {
-      const motorista = motoristaVerifier(body, 'update')
+      const motorista = motoristaVerifier(body)
       const motoristaExist = await this.repository.update(id, motorista)
       if (!motoristaExist)
         throwErrorHandler(new Error('Motorista não encontrado'))
@@ -30,9 +27,9 @@ export class MotoristaService {
     }
   }
 
-  async findAll(query: IMotoristaFindAllQueryDTO): Promise<Motorista[]> {
+  async findAll(query?: Partial<Motorista>): Promise<Motorista[]> {
     try {
-      const finalQuery = motoristaVerifier(query, 'findQuery')
+      const finalQuery = motoristaVerifier(query, 'findAll')
       return this.repository.findAll(finalQuery)
     } catch (e) {
       throwErrorHandler(e)
