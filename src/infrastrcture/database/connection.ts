@@ -1,6 +1,7 @@
-import { IDatabase } from 'pg-promise'
 const pgp = require('pg-promise')()
+import dotenv from 'dotenv'
+dotenv.config()
 
 export const postgresConnection = pgp(
-  'postgres://admin:12345@localhost:5432/postgres',
+  `postgres://${process.env.PGSQL_USER}:${process.env.PGSQL_PASSWORD}@localhost:5432/postgres`,
 )
